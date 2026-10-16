@@ -1,0 +1,13 @@
+caso TalkTalk (2015):
+
+O que aconteceu: Cibercriminosos invadiram o sistema da operadora britânica TalkTalk.
+
+A causa: A empresa não validava os dados inseridos pelos usuários nas páginas do site.
+ Isso permitiu que os invasores enviassem comandos maliciosos diretamente ao banco de dados (ataque de SQL Injection).
+
+O impacto: Dados pessoais e bancários de 1,6 milhão de clientes foram roubados.
+ A empresa perdeu mais de 100 mil assinantes e teve um prejuízo superior a £ 42 milhões.
+
+A lição (e a ligação com o seu código): A validação rigorosa dos dados de entrada 
+(como verificar se o título é uma string e tem limite de caracteres)
+é uma barreira de segurança vital para impedir que invasores manipulem ou derrubem o seu sistema. Nunca confie nos dados enviados pelo cliente.
