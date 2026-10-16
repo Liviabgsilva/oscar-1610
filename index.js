@@ -1,6 +1,10 @@
 const express = require('express');
 const app = express();
-app.use(express.json()); // necessário para ler JSON do corpo das requisições
+app.use(express.json());
+// ALERTA DE SEGURANÇA: Banco de dados em memória (Array)
+// Os dados somem ao reiniciar o servidor porque a memória RAM é volátil. 
+// Além disso, se sofrer um ataque que lote o array, o servidor cai por falta de memória.
+
 
 // "Banco de dados" em memória (Exercício 1: Campo prioridade adicionado)
 let tarefas = [
@@ -8,6 +12,10 @@ let tarefas = [
   { id: 2, titulo: 'Criar minha primeira API', concluida: false, prioridade: 'média' }
 ];
 let proximoId = 3;
+// FALHA 06 (Falta de Limites): Não há "Rate Limiting" configurado aqui. 
+// Um único robô pode fazer milhares de requisições por segundo e travar a API.
+// FALHA 04 (Ausência de Autenticação): Qualquer pessoa na internet que acessar esse 
+// link consegue ver o resumo de tarefas do sistema, violando a privacidade dos dados.
 
 // Exercício 2: Endpoint GET /tarefas/resumo
 // IMPORTANTE: Deve vir ANTES de GET /tarefas/:id para o Express não achar que "resumo" é um ID.
@@ -43,6 +51,14 @@ app.get('/tarefas/:id', (req, res) => {
 app.post('/tarefas', (req, res) => {
   const { titulo, prioridade } = req.body;
 
+  
+  // FALHA 02 (Validação de Entrada Incompleta):
+  // O código barra apenas títulos vazios. Mas ele aceita:
+  // 1. Um texto gigante de 50 milhões de caracteres (Ataque de Negação de Serviço).
+  // 2. Um código de programação como <script>alert('hackado')</script> (Ataque XSS).
+  // 3. Tipos de dados errados (como enviar um número ou um objeto no lugar do título).
+ 
+
   // Validação: impede título vazio ou apenas com espaços
   if (!titulo || titulo.trim() === '') {
     return res.status(400).json({ erro: 'O campo "titulo" é obrigatório e não pode ser vazio' });
@@ -69,6 +85,12 @@ app.post('/tarefas', (req, res) => {
   res.status(201).json(novaTarefa);
 });
 
+
+// FALHA 04 CRÍTICA (Controle de Acesso Quebrado):
+// Qualquer usuário anônimo pode disparar esse método DELETE e apagar as 
+// tarefas concluídas de TODO MUNDO do sistema de uma vez só, sem precisar de login.
+
+
 // Exercício 4: Endpoint DELETE /tarefas (Apaga todas as concluídas)
 app.delete('/tarefas', (req, res) => {
   // Filtra a lista mantendo apenas o que NÃO está concluído
@@ -82,6 +104,8 @@ app.put('/tarefas/:id', (req, res) => {
   if (!tarefa) return res.status(404).json({ erro: 'Tarefa nao encontrada' });
   
   const { titulo, concluida, prioridade } = req.body;
+  // FALHA DE VALIDAÇÃO: Aceita qualquer tipo de dado enviado no corpo da requisição.
+  // Se o atacante enviar um objeto complexo em "concluida", pode corromper a lógica do array.
   if (titulo !== undefined) tarefa.titulo = titulo;
   if (concluida !== undefined) tarefa.concluida = concluida;
   if (prioridade !== undefined) tarefa.prioridade = prioridade;
