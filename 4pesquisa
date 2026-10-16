@@ -29,3 +29,30 @@ Aqui está o resumo do que acontece ao reiniciar o servidor:
 
 * **Versão 1 (Memória):** **Todos os dados são perdidos.** As informações ficam apenas na memória RAM (temporária) e são apagadas quando o sistema reinicia.
 * **Versão Atual (Banco de Dados):** **Os dados estão a salvo.** As informações ficam gravadas permanentemente no disco rígido e continuam intactas quando o servidor volta ao ar.
+
+Aqui está a comparação em formato de texto corrido:
+
+**Persistência dos dados**
+
+* Versão 1 (Memória): Perde tudo ao reiniciar.
+* Versão 2 (PostgreSQL): Os dados permanecem salvos.
+
+**Complexidade de setup**
+
+* Versão 1 (Memória): Baixa.
+* Versão 2 (PostgreSQL): Média (requer banco de dados configurado).
+
+**Dependências**
+
+* Versão 1 (Memória): express
+* Versão 2 (PostgreSQL): express, pg, dotenv
+
+**Onde os dados ficam**
+
+* Versão 1 (Memória): Em um Array na memória do processo do Node.
+* Versão 2 (PostgreSQL): Em uma tabela estruturada no banco PostgreSQL.
+
+**Indicação de uso**
+
+* Versão 1 (Memória): Ideal para aprender REST, Express e lógica básica.
+* Versão 2 (PostgreSQL): Padrão para aplicações reais e ambientes de produção.
