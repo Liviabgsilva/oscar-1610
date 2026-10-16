@@ -11,3 +11,21 @@ O impacto: Dados pessoais e bancários de 1,6 milhão de clientes foram roubados
 A lição (e a ligação com o seu código): A validação rigorosa dos dados de entrada 
 (como verificar se o título é uma string e tem limite de caracteres)
 é uma barreira de segurança vital para impedir que invasores manipulem ou derrubem o seu sistema. Nunca confie nos dados enviados pelo cliente.
+
+6- • Pesquise sobre migrations e explique por que são preferíveis a criar tabelas manualmente.
+**Migrations** são como um sistema de controle de versão para o banco de dados (assim como o Git é para o código). Em vez de criar tabelas rodando comandos SQL manuais, você escreve arquivos de código (migrations) que descrevem as alterações (ex: "criar tabela de usuários").
+
+Elas são preferíveis à criação manual porque:
+
+* **Histórico e Controle:** Mantêm um registro de todas as mudanças feitas no banco desde o início do projeto.
+* **Trabalho em Equipe:** Garantem que todos os desenvolvedores tenham a mesma estrutura de banco de dados, evitando o erro "na minha máquina funciona".
+* **Rollbacks Seguros:** Permitem desfazer alterações facilmente caso algo dê errado em uma atualização.
+* **Deploy Automatizado:** Integram-se ao processo de deploy, atualizando o banco de dados do servidor automaticamente e sem risco de erros humanos.
+* **Agnosticismo de Banco:** Ferramentas de migration geralmente permitem escrever em uma linguagem (como JavaScript) e traduzem para o SQL do banco que você estiver usando (PostgreSQL, MySQL, etc.).
+
+• Compare: o que aconteceria com os dados desta versão se o servidor reiniciasse? E na Versão
+1?
+Aqui está o resumo do que acontece ao reiniciar o servidor:
+
+* **Versão 1 (Memória):** **Todos os dados são perdidos.** As informações ficam apenas na memória RAM (temporária) e são apagadas quando o sistema reinicia.
+* **Versão Atual (Banco de Dados):** **Os dados estão a salvo.** As informações ficam gravadas permanentemente no disco rígido e continuam intactas quando o servidor volta ao ar.
